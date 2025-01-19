@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 
 function App(){
-  // UseState takes an array of the initial state and the function to update the state of a given variable
-  const [status, setStatus] = useState("Not Delivered");
-  
+  // UseState to initilize a checkbox 
+  // imput uses onChange and value for inuot contents
+ const [checked, setChecked] = useState(false); 
   return (
     <div>
-      <h1>The package is: {status}</h1>
-      <button onClick={() => setStatus("Delivered")}>Deliver</button>
+    <input type='checkbox' value={checked} onChange={() => setChecked(!checked)}/>
+    <p>{checked ? "Checked":"Not Checked"}</p>
     </div>
   );
 }
