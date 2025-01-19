@@ -1,22 +1,51 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import { FaStar } from 'react-icons/fa';
 
-function App(){
-  // UseState to initilize a checkbox 
-  // imput uses onChange and value for inuot contents
- const [checked, setChecked] = useState(false); 
-  return (
-    <div>
-    <input type='checkbox' value={checked} onChange={() => setChecked(!checked)}/>
-    <p>{checked ? "Checked":"Not Checked"}</p>
-    </div>
-  );
+// create an array of a given length
+const createArray = (length) => [...Array(length)];
+
+// selected default vaue = false
+function Star({ selected = false, onSelect }) {
+  return <FaStar
+    color={selected ? "red" : "grey"}
+    onClick={onSelect}
+  />
 }
+
+// Passed value would be <StarRating totalRatings={10}
+// totalRatings given default value = 5 if no value is passed like <StarRating />
+function StarRating({ totalRatings = 3 }) {
+
+  const [selectedStars, setSelectedStars] = useState(0);
+
+  return (
+    <>{
+      createArray(totalRatings).map((n, i) => (
+        <Star
+          key={i}
+          selected={selectedStars > i}
+          onSelect={() => setSelectedStars(i + 1)}
+        />
+      ))// end map
+    }
+    <p>Rating: {selectedStars} of {totalRatings}</p>
+    </>
+  );// return
+
+}// end function StarRating
+
+function App() {
+  return (
+    <StarRating totalRatings={5} />
+  )
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App name="Muzi"/>
+    <App />
   </React.StrictMode>
 );
 
