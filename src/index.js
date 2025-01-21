@@ -1,31 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useReducer } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
 
-function App() {
-  const [data, setData] = useState([]);
+const initialState = {
+  message: "hi"
+}
 
-  // Fetch data to retrieve data
-  // If the second argument is provided the effect will only fire once on first render
-  // Hence means the data is only fetched once and not pn eevry render when clicking the clear button
-  // Removing the dependency array will continously fetch data even after clear data render
-  useEffect(() => {
-    fetch(`https://api.github.com/users`)
-      .then(response => response.json())
-      .then(res => setData(res));
-    //.then(setData); // shirthand
-  }, [])
+function reducer(state, action) {
+  // eslint-disable-next-line default-case
+  switch (action.type) {
+    case "yell":
+      return {
+        // You have access to the previous message value
+        message: `HEY!! I JUST SAID ${state.message}`
+      };
+    case "whisper":
+      return {
+        message: "excuse me"
+      };
+  }
+}
+
+function App() {
+  const [state, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
   return (
-    <div>
-      <ul>
-        {data.map((user) => (
-          <li key={user.id}>{user.login}</li>
-        ))}
-      </ul>
-      <button onClick={() => setData([])}>Clear Data</button>
-    </div>
+    <>
+      <p>Message: {state.message}</p>
+      <button onClick={() => dispatch({ type: "yell" })}>YELL</button>
+      <button onClick={() => dispatch({ type: "whisper" })}>whisper</button>
+    </>
   )//end return
 }
 
