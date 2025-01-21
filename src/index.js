@@ -1,30 +1,37 @@
-import React, {  useRef } from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import React, {  useState } from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
 
 function App() {
-  const mood = useRef();
-  const color = useRef();
+  const [mood, setMood] = useState("");
+  const [color, setColor] = useState("");
 
   const submit = (e) => {
     e.preventDefault();
-    const moodValue = mood.current.value;
-    const colorValue = color.current.value;
-    alert(`${moodValue} goes with colour ${colorValue}`)
-    mood.current.value = "type mood...";
-    color.current.value = "";
-  }
+    alert(`${mood} goes with colour ${color}`);
+    setMood("type mood");
+    setColor("");
+  };
 
   return (
     <form onSubmit={submit}>
-      <input ref={mood} type='text' placeholder='Mood..'/>
-      <input ref={color} type='color' />
-      <button >ADD</button>
+      <input 
+      value={mood} 
+      type="text" 
+      placeholder="Mood.." 
+      onChange={(e) => setMood(e.target.value)}
+      />
+      <input 
+      value={color} 
+      type="color"
+      onChange={(e) => setColor(e.target.value)} 
+      />
+      <button>ADD</button>
     </form>
-  )//end return
+  ); //end return
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <App />
