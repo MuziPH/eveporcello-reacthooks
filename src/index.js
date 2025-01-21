@@ -1,45 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { FaStar } from 'react-icons/fa';
 
-// create an array of a given length
-const createArray = (length) => [...Array(length)];
-
-// selected default vaue = false
-function Star({ selected = false, onSelect }) {
-  return <FaStar
-    color={selected ? "red" : "grey"}
-    onClick={onSelect}
-  />
-}
-
-// Passed value would be <StarRating totalRatings={10}
-// totalRatings given default value = 5 if no value is passed like <StarRating />
-function StarRating({ totalRatings = 3 }) {
-
-  const [selectedStars, setSelectedStars] = useState(0);
-
-  return (
-    <>{
-      createArray(totalRatings).map((n, i) => (
-        <Star
-          key={i}
-          selected={selectedStars > i}
-          onSelect={() => setSelectedStars(i + 1)}
-        />
-      ))// end map
-    }
-    <p>Rating: {selectedStars} of {totalRatings}</p>
-    </>
-  );// return
-
-}// end function StarRating
 
 function App() {
+  const [data, setData] = useState([]);
+
+  // Fetch data to retrieve data
+  // If the second argument is provided the effect will only fire once on first render
+  // Hence means the data is only fetched once and not pn eevry render when clicking the clear button
+  // Removing the dependency array will continously fetch data even after clear data render
+  useEffect(() => {
+    fetch(`https://api.github.com/users`)
+      .then(response => response.json())
+      .then(res => setData(res));
+    //.then(setData); // shirthand
+  }, [])
+
   return (
-    <StarRating totalRatings={5} />
-  )
+    <div>
+      <ul>
+        {data.map((user) => (
+          <li key={user.id}>{user.login}</li>
+        ))}
+      </ul>
+      <button onClick={() => setData([])}>Clear Data</button>
+    </div>
+  )//end return
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
