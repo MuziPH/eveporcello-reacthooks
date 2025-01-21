@@ -1,39 +1,26 @@
-import React, { useReducer } from 'react';
+import React, {  useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
-
-const initialState = {
-  message: "hi"
-}
-
-function reducer(state, action) {
-  // eslint-disable-next-line default-case
-  switch (action.type) {
-    case "yell":
-      return {
-        // You have access to the previous message value
-        message: `HEY!! I JUST SAID ${state.message}`
-      };
-    case "whisper":
-      return {
-        message: "excuse me"
-      };
-  }
-}
-
 function App() {
-  const [state, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
+  const mood = useRef();
+  const color = useRef();
+
+  const submit = (e) => {
+    e.preventDefault();
+    const moodValue = mood.current.value;
+    const colorValue = color.current.value;
+    alert(`${moodValue} goes with colour ${colorValue}`)
+    mood.current.value = "type mood...";
+    color.current.value = "";
+  }
 
   return (
-    <>
-      <p>Message: {state.message}</p>
-      <button onClick={() => dispatch({ type: "yell" })}>YELL</button>
-      <button onClick={() => dispatch({ type: "whisper" })}>whisper</button>
-    </>
+    <form onSubmit={submit}>
+      <input ref={mood} type='text' placeholder='Mood..'/>
+      <input ref={color} type='color' />
+      <button >ADD</button>
+    </form>
   )//end return
 }
 
