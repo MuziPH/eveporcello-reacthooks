@@ -1,41 +1,22 @@
-import React, {  useState } from "react";
+import React, { createContext } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
+import App from "./App";
 
-function App() {
-  const [mood, setMood] = useState("");
-  const [color, setColor] = useState("");
+export const TreesContext = createContext();
 
-  const submit = (e) => {
-    e.preventDefault();
-    alert(`${mood} goes with colour ${color}`);
-    setMood("type mood");
-    setColor("");
-  };
-
-  return (
-    <form onSubmit={submit}>
-      <input 
-      value={mood} 
-      type="text" 
-      placeholder="Mood.." 
-      onChange={(e) => setMood(e.target.value)}
-      />
-      <input 
-      value={color} 
-      type="color"
-      onChange={(e) => setColor(e.target.value)} 
-      />
-      <button>ADD</button>
-    </form>
-  ); //end return
-}
+const trees = [
+  { id: "1", type: "Maple" },
+  { id: "2", type: "Oal" },
+  { id: "3", type: "Family" },
+  { id: "4", type: "Componet" },
+];
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  <TreesContext.Provider value={{ trees }}>
     <App />
-  </React.StrictMode>
+  </TreesContext.Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
