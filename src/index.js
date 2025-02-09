@@ -1,24 +1,33 @@
-import React, { createContext, useContext } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
+import { useFetch } from "./useFetch";
 
-const TreesContext = createContext();
+function App({ login }) {
+  const { loading, data, error } = useFetch(`https://api.github.com/users/${login}`);
 
-export const useTrees = () => useContext(TreesContext)
+  if (loading) 
+    return (<h1>Loading...</h1>);
+  
+  if (error) 
+    return (
+    <pre>{JSON.stringify(error, null, 2)}</pre>
+  );
 
-const trees = [
-  { id: "1", type: "Maple" },
-  { id: "2", type: "Oal" },
-  { id: "3", type: "Family" },
-  { id: "4", type: "Componet" },
-];
+  return (
+    <div>
+      <img src={data.avatar_url} alt=""/>
+    <div>
+      <h1>{data.login}</h1>
+    </div>
+    </div>
+  );
+}
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root= ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
-  <TreesContext.Provider value={{ trees }}>
-    <App />
-  </TreesContext.Provider>
+<App login="MuziPH"/>
 );
 
 // If you want to start measuring performance in your app, pass a function
