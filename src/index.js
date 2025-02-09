@@ -1,31 +1,23 @@
-import React, {  useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
+import { useInput } from "./useInput";
 
 function App() {
-  const [mood, setMood] = useState("");
-  const [color, setColor] = useState("");
+  const [titleProps, resetTitle] = useInput("");
+  const [colorProps, resetColor] = useInput("#000000");
 
   const submit = (e) => {
     e.preventDefault();
-    alert(`${mood} goes with colour ${color}`);
-    setMood("type mood");
-    setColor("");
+    alert(`${titleProps.value} goes with colour ${colorProps.value}`);
+    resetTitle();
+    resetColor();
   };
 
   return (
     <form onSubmit={submit}>
-      <input 
-      value={mood} 
-      type="text" 
-      placeholder="Mood.." 
-      onChange={(e) => setMood(e.target.value)}
-      />
-      <input 
-      value={color} 
-      type="color"
-      onChange={(e) => setColor(e.target.value)} 
-      />
+      <input {...titleProps} type="text" placeholder="Mood.." />
+      <input {...colorProps} type="color" />
       <button>ADD</button>
     </form>
   ); //end return
